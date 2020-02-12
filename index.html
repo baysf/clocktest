@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<style>
+body {
+	font-family: "Trebuchet MS";
+}
+
+</style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129190880-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-129190880-1');
+</script>
+
+	<title id="time_left">Bay Clock</title>
+</head>
+<meta http-equiv="refresh" content="300" />
+
+<body onload="start()">
+    
+	<h1 class = "titleText" style="text-align:left;float:left;margin-bottom:0;margin-top:8px;" id="htmlcurrent_time"></h1> 
+    <h1 class = "titleText" style="text-align:right;float:right;margin-bottom:0;margin-top:8px;margin-right:10px" id="htmlcurrent_date"></h1> 
+	<!-- <p  id="htmlcurrent_time" style="float:right" class="titleText"></p>
+	<p  id="htmlcurrent_time" class="titleText"></p> -->
+	<br><br><br>
+	<h3 class="infoText" style="text-align:left;float:left;margin-top:0;" id="htmldaystillend_date"></h3>
+	<br><br>
+
+	<div id="main"></div> <!-- I create div's in javascript and append them to this latter -->
+	<style type="text/css">
+
+body {
+background-repeat: no-repeat;
+background-size: 100% 100%;
+}
+ 
+</style>
+</body>
+
+
+
+<script>
+    var aBlock = "A Block"
+    var bBlock = "B Block"
+    var cBlock = "C Block"
+    var dBlock = "D Block"
+    var eBlock = "E Block"
+    var fBlock = "F Block"
+	var s_since_midnight; //Declares s_since_midnight as a global variable, useful since its used in a few functions
+	var title_time_left;
+
+	var diffDays1=(function(){
+		var oneDay = 24*60*60*1000; // hours minutes seconds milliseconds, makes milliseconds in a day
+		var secondDate = new Date(new Date("May 15, 2020")); //Creates the date on May 16th, 2018
+		var firstDate = new Date(); //Creates the date at the current date
+		return Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay))); //Sets diffDays1 to secondDate - first date (gets days till the first day of summer, May 18th)
+	})();
+	document.getElementById("htmldaystillend_date").innerHTML = "Days until May 15th 2020: " + (diffDays1 - 1); //Prints days till May 16th under the current date and time
+
+
+	function setup_time() {
+		var current_time = new Date(); //Get current date and all that jazz
+		var milliseconds = new Date(current_time); //Get milliseconds since January 1st 1970
+		s_since_midnight = Math.floor((current_time - milliseconds.setHours(0,0,0,0)) / 1000); //Convert to milliseconds since midnight
+		current_time = current_time.toString();
+		current_time = current_time.substring(0, 25);
+		n =  new Date();
+        y = n.getFullYear();
+        m = n.getMonth() + 1;
+        d = n.getDate();
+        w = n.getDay();
+        var day = "unknown";
+        if(w==0){
+	        day = "Sunday"
+    	}else if(w==1){
+            day = "Monday"
+        }else if(w==2){
+            day = "Tuesday"
+        }else if(w==3){
+            day = "Wednesday"
+        }else if(w==4){
+            day = "Thursday"
+        }else if(w==5){
+            day = "Friday"
+        }else if(w==6){
+            day = "Saturday"
+        }
+        var t = s_since_midnight;
+        console.log(t)
+        if (t>=46800){
+            window.tS = true;
+            t-=43200;
+        } else{
+            window.tS = false;
+        }
+        t = s_to_hms(t);
+        document.getElementById("htmlcurrent_date").innerHTML = m + "/" + d + "/" + y;
+        document.getElementById("htmlcurrent_time").innerHTML = day +"&hairsp; - &hairsp;" + t;
+		return s_since_midnight;
+	}
+	function time_bar(start, end, div_id, till_id, remaining_id) { //start is the start of class in seconds, end is end in seconds, duration is duration in seconds, div_id is the progress bar's id (the second div, not the outmost one above)
+		var div = document.getElementById(div_id); //Saves me time typing
+		var duration = end - start;
+		var width = ((s_since_midnight - start) / duration) * 100; //I'll leave it for now but I don't think I'll need these two lines later (this and the next) set this to 0 to check and comment out the next
+		div.style.width = width + "%"; //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		var id = setInterval(update, 1); //Makes the next thing run every millisecond :D fancy af
+		function update() { //Function that runs a lot
+		
+    		if (tS == true){
+    		    var dC = new Date();
+                dC = dC.getDay();
+                console.log(dC)
+                dC+=1;
+    		    document.getElementById("menuTitle").innerHTML = "Tomorrow's Lunch"
+    		    document.getElementById("menuTitle").style.textDecoration = "underline";
+    		    document.getElementById("menuTitle").style.fontSize = "large";
+    		    if (dC==1) {
+    		        document.getElementById("lunchMenu").innerHTML = mondayLunch;
+    		    } else if (dC==2){
+    		        document.getElementById("lunchMenu").innerHTML = tuesdayLunch;
+    		    } else if (dC==3){
+    		        document.getElementById("lunchMenu").innerHTML = wednesdayLunch;
+    		    } else if (dC==4){
+    		        document.getElementById("lunchMenu").innerHTML = thursdayLunch;
+    		    } else if (dC==5){
+    		        document.getElementById("lunchMenu").innerHTML = fridayLunch;
+    		    } else {
+    		        document.getElementById("lunchMenu").innerHTML = "No School";
+    		    }
+    		}
+    		console.log(tS);
+			if (width >= 100) { //If statement, common.
+				width = 100; //If width is over 100% terminate the bar
+				div.style.width = width + "%"; //Set bar fullness to 100%
+				clearInterval(id); //Terminates this block if the bar fills up completely, keeps the site looking neat
+			} else {
+				width = ((s_since_midnight - start) / duration) * 100; //Update width
+				div.style.width = width + "%"; //Update CSS with new width
+			}
+		}
+		setInterval(start_end, 1);
+		function start_end(){
+			s_since_midnight = setup_time();
+			var time_till;
+			if (start > s_since_midnight) {
+				time_till = start - s_since_midnight;
+				document.getElementById(till_id).innerHTML = "Time until start: " + s_to_hms(time_till);
+			} else if (start < s_since_midnight) {
+				time_till = s_since_midnight - start;
+				document.getElementById(till_id).innerHTML = "Time since start: " + s_to_hms(time_till);
+			}
+			var time_remaining;
+			if (end > s_since_midnight) {
+				time_remaining = end - s_since_midnight;
+				document.getElementById(remaining_id).innerHTML = "Time until end: " + s_to_hms(time_remaining);
+			} else if (end < s_since_midnight) {
+				time_remaining = s_since_midnight - end;
+				document.getElementById(remaining_id).innerHTML = "Time since end: " + s_to_hms(time_remaining);
+                
+			
+			}
+		}
+		//document.getElementById(till_id).innerHTML = s_to_hms(start)
+	}
+
+	function s_to_hms(s) {
+		var hours = Math.floor(s / 3600);
+		var minutes = Math.floor((s % 3600) / 60);
+		var seconds = ((s % 3600) % 60).toFixed(0);
+		if (seconds == 60){
+			minutes = minutes + 1;
+			seconds = 0;
+		}
+		if (minutes == 60) {
+			hours = hours + 1;
+			minutes = 0;
+		}
+		if ((minutes > 9) && (seconds > 9)) {
+			return hours + ":" + minutes + ":" + seconds;
+		} else if ((minutes < 10) && (seconds < 10)) {
+			return hours + ":0" + minutes + ":0" + seconds;
+		} else if ((minutes < 10) && (seconds > 9)) {
+			return hours + ":0" + minutes + ":" + seconds;
+		} else if ((minutes > 9) && (seconds < 10)) {
+			return hours + ":" + minutes + ":0" + seconds;
+		}
+	}
+	
+	function s_to_hm(s) {
+		var hours = Math.floor(s / 3600);
+		var minutes = Math.floor((s % 3600) / 60);
+		var seconds = ((s % 3600) % 60).toFixed(0);
+		if (seconds == 60){
+			minutes = minutes + 1;
+			seconds = 0;
+		}
+		if (minutes == 60) {
+			hours = hours + 1;
+			minutes = 0;
+		}
+		if ((minutes > 9) && (seconds > 9)) {
+			return hours + ":" + minutes
+		} else if ((minutes < 10) && (seconds < 10)) {
+			return hours + ":0" + minutes
+		} else if ((minutes < 10) && (seconds > 9)) {
+			return hours + ":0" + minutes
+		} else if ((minutes > 9) && (seconds < 10)) {
+			return hours + ":" + minutes
+		}
+	}
+
+	function hm_to_s(hms){
+		var h = parseInt(hms.substring(0, 3));
+		var m = parseInt(hms.substring(3, 5));
+
+		return (h * 3600) + (m * 60);
+	}
+
+	var div_number = 0;
+
+	function create_bar(start, end, block_name) { //Start is the start time of the class in military time ex: "13:10", End is the end time in the same format, block_name is the name of the block (this goes in the middle of the progress bar), examples are under the monday, tuesday, wednesday, etc functions below
+		var first_loop = true;
+		var div_name = "div_name" + div_number;
+		var div_id = "div_id" + div_number;
+		var till_id = "till_id" + div_number;
+		var remaining_id = "remaining_id" + div_number;
+		
+		var block_id = "block_id" + div_number;
+		var time_start = start;
+		var time_end = end;
+		start = hm_to_s(start);
+		end = hm_to_s(end);
+		var timeStart = start;
+		if(timeStart >= 46800) {
+		    console.log("big");
+		    timeStart -= 43200;
+	    }
+		timeStart = s_to_hm(timeStart);
+        var timeEnd = end;
+		if(timeEnd >= 46800) {
+		    timeEnd -= 43200;
+	    }
+		timeEnd = s_to_hm(timeEnd);
+		var div = document.createElement("div"); //Create outermost div, the grey bar one
+		div.id = div_name; //Give div id = to that when declaring the function BE CAREFUL WITH THIS, IT TOOK 2 HOURS TO REALIZE THIS IS DIV_NAME NOT DIV_ID CAUSE I STARTED RUNNING OUT OF VARIABLE NAMES!!!!!!!
+		div.style.position = "relative";
+		div.style.width = "100%";
+		div.style.backgroundColor = "lightgrey";
+		div.style.borderRadius = "5px";
+		div.style.height = "24px";
+		//div.stlye.zIndex = "1";
+		div.style.color = "white";
+		div.style.marginTop = "10px";
+		div.style.fontSize = "18px";
+		
+		var div_till = document.createElement("div"); //Create div which will hold the time till class starts
+		div_till.id = till_id;
+		div_till.style.textAlign = "left";
+		div_till.style.position = "relative";
+		div_till.style.zIndex = "3";
+		div_till.style.marginLeft = "5px";
+		div_till.style.height = "30px"; //check if this can be set to 24 later, this will bug me
+		
+		var div_block = document.createElement("div"); // create div for the text in the middle of the bar
+		div_block.id = block_id;
+		div_block.style.textAlign = "center";
+		div_block.style.position = "relative";
+		div_block.style.marginTop = "-30px";
+		div_block.style.zIndex = "3";
+		div_block.innerHTML = timeStart + " - " + timeEnd + " " + block_name;
+		
+		var div_time_remaining = document.createElement("div"); //create the time remaining text's div on the right of the bar
+		div_time_remaining.id = remaining_id;
+		div_time_remaining.style.textAlign = "right";
+		div_time_remaining.style.position = "relative";
+		div_time_remaining.style.zIndex = "3";
+		div_time_remaining.style.top = "-21px";
+		div_time_remaining.style.marginRight = "5px";
+		
+		
+		var div_progress = document.createElement("div"); //create div for the progress bar, blue thingy
+		div_progress.id = div_id;
+		div_progress.style.position = "absolute";
+		div_progress.style.top = "0";
+		//div_progress.style.marginTop = "-15px";
+		div_progress.style.height = "24px";
+		div_progress.style.backgroundColor = "#232d61";
+		//div_progress.style.lineHeight = "30px";
+		div_progress.style.borderRadius = "5px";
+		div_progress.style.zIndex = "2";
+
+		document.getElementById("main").appendChild(div);
+
+		document.getElementById(div_name).appendChild(div_till);
+		document.getElementById(div_name).appendChild(div_block);
+		document.getElementById(div_name).appendChild(div_time_remaining);
+		document.getElementById(div_name).appendChild(div_progress);
+
+		if (first_loop == true) {
+			first_loop = false;
+			div_number = div_number + 1;
+		}
+
+		setInterval(time_bar(start, end, div_id, till_id, remaining_id), 1);
+		
+	}
+	var div_loop = 0
+	function clearClasses(){
+         var divToClear = 'div_name'.concat(div_loop);
+         document.getElementById(divToClear).style.display = "none";
+         div_loop += 1;
+         if (blockCount>1){
+             divToClear = 'div_name'.concat(div_loop);
+             document.getElementById(divToClear).style.display = "none";
+             div_loop += 1;
+         } if (blockCount>2){
+             divToClear = 'div_name'.concat(div_loop);
+             document.getElementById(divToClear).style.display = "none";
+             div_loop += 1;
+         } if (blockCount>3){
+             divToClear = 'div_name'.concat(div_loop);
+             document.getElementById(divToClear).style.display = "none";
+             div_loop += 1;
+         } if (blockCount>4){
+             divToClear = 'div_name'.concat(div_loop);
+             document.getElementById(divToClear).style.display = "none";
+             div_loop += 1;
+         } if (blockCount>5){
+             divToClear = 'div_name'.concat(div_loop);
+             document.getElementById(divToClear).style.display = "none";
+             div_loop += 1;
+         } if (blockCount>6){
+             divToClear = 'div_name'.concat(div_loop);
+             document.getElementById(divToClear).style.display = "none";
+             div_loop += 1;
+         }
+	}
+    
+    mondayLunch = "Whole Wheat Quesadillas with Smoky Pinto Beans and Salsa";
+    tuesdayLunch = "Greek Roasted Chicken or Falafel Patties with Seasonal Sauce and Greek Salad";
+    wednesdayLunch = "Penne Pasta with Marinara Sauce and Seasonal Vegetables";
+    thursdayLunch = "Niman Ranch or Housemade Veggie Burgers with Tri Color Coleslaw & Potato Wedges";
+    fridayLunch = "Chicken or Vegetable Coconut Curry with Aromatic Basmati Rice";
+    
+    
+    /* Options:
+    Monday: "normal", "first day"
+    Tuesday: "normal", "extended mm"
+    Wednesday: "normal", "thanksgiving"
+    Thursday: "normal", "reportCards", "gathering"
+    Friday: "normal", "lateStart", "grandfriends"
+    */
+    
+    var immersives = false;
+    var projectWeek = false;
+    
+    mondayType = "normal"
+    tuesdayType = "normal"
+    wednesdayType = "normal"
+    thursdayType = "reportCards"
+    fridayType = "normal"
+    
+    
+	function monday(){
+	    if (immersives == true){
+	        create_bar("09:00", "15:00", "Immersives");
+	        blockCount = 1
+	        document.getElementById("lunchMenu").innerHTML = mondayLunch;
+	    } else if (projectWeek == true){
+	        create_bar("08:10", "08:30", "Morning Meeting");
+    		create_bar("08:35", "10:05", aBlock);
+    		create_bar("10:20", "11:50", bBlock);
+    		create_bar("11:50", "12:45", "Lunch");
+    	    create_bar("12:45", "14:15", cBlock);
+    	    create_bar("14:15", "14:45", "Tutorial");
+    	    blockCount = 6
+    	    document.getElementById("lunchMenu").innerHTML = mondayLunch;
+	    } else {
+    		if (mondayType == "normal"){
+    		    create_bar("08:10", "08:30", "Morning Meeting");
+    		    create_bar("08:35", "09:55", aBlock);
+    		    create_bar("10:05", "11:25", bBlock);
+    		    create_bar("11:25", "12:20", "Lunch");
+    		    create_bar("12:20", "13:40", cBlock);
+    		    create_bar("13:45", "15:05", dBlock);
+    		    create_bar("15:05", "15:30", "Tutorial");
+    		    blockCount = 7
+    		    document.getElementById("lunchMenu").innerHTML = mondayLunch;
+    		} else if (mondayType == "first day"){
+    		    create_bar("08:10", "08:35", "Morning Meeting");
+    	    	create_bar("08:40", "09:10", "Advisory");
+    		    create_bar("09:15", "10:15", aBlock);
+    		    create_bar("10:20", "11:20", bBlock);
+    		    create_bar("11:20", "12:20", "Lunch");
+    		    create_bar("12:20", "13:20", cBlock);
+    		    create_bar("13:25", "14:25", dBlock);
+    		    blockCount = 7
+    		    document.getElementById("lunchMenu").innerHTML = mondayLunch;
+    		}
+	    }
+	}
+	function tuesday(){
+	   if (immersives == true){
+	        create_bar("09:00", "15:00", "Immersives");
+	        blockCount = 1
+	        document.getElementById("lunchMenu").innerHTML = tuesdayLunch;
+	    } else if (projectWeek == true){
+	        create_bar("08:10", "08:30", "Morning Meeting");
+    		create_bar("08:35", "10:05", dBlock);
+    		create_bar("10:20", "11:50", eBlock);
+    		create_bar("11:50", "12:45", "Lunch");
+    		create_bar("12:45", "14:15", fBlock);
+    		create_bar("14:15", "14:45", "Tutorial");
+    		blockCount = 6
+    		document.getElementById("lunchMenu").innerHTML = tuesdayLunch;
+	    } else {
+    		if (tuesdayType == "normal"){
+    		    create_bar("08:10", "08:30", "Morning Meeting");
+		        create_bar("08:35", "09:55", eBlock);
+		        create_bar("09:55", "10:35", "Clubs");
+		        create_bar("10:40", "12:00", fBlock);
+		        create_bar("12:00", "12:55", "Lunch");
+		        create_bar("12:55", "14:15", aBlock);
+	        	create_bar("14:15", "14:45", "Tutorial");
+	        	blockCount = 7
+		        document.getElementById("lunchMenu").innerHTML = tuesdayLunch;
+    		} else if (tuesdayType == "extended mm"){
+    		    create_bar("08:10", "08:50", "Extended Morning Meeting");
+        		create_bar("08:55", "10:10", eBlock);
+        		create_bar("10:10", "10:50", "Clubs");
+        		create_bar("10:55", "12:10", fBlock);
+        		create_bar("12:10", "13:00", "Lunch");
+        		create_bar("13:00", "14:15", aBlock);
+        		create_bar("14:15", "14:45", "Tutorial");
+        		blockCount = 7
+        		document.getElementById("lunchMenu").innerHTML = tuesdayLunch;
+    		}
+	    }
+	}
+	function wednesday(){
+	    if (immersives == true){
+	        create_bar("09:00", "15:00", "Immersives");
+	        blockCount = 1
+	        document.getElementById("lunchMenu").innerHTML = wednesdayLunch;
+	    } else if (projectWeek == true){
+        	create_bar("08:35", "11:05", aBlock);
+    		create_bar("11:05", "12:00", "Lunch");
+    		create_bar("12:00", "14:30", bBlock);
+    		blockCount = 3
+    		document.getElementById("lunchMenu").innerHTML = wednesdayLunch;
+	    } else {
+    		if (wednesdayType == "normal"){
+    		    create_bar("08:10", "08:30", "Advisory");
+        		create_bar("08:35", "09:55", bBlock);
+        		create_bar("10:05", "11:25", cBlock);
+        		create_bar("11:25", "12:20", "Lunch");
+        		create_bar("12:20", "13:40", dBlock);
+        		create_bar("13:45", "15:05", eBlock);
+        		create_bar("15:05", "15:30", "Tutorial");
+        		blockCount = 7
+        		document.getElementById("lunchMenu").innerHTML = wednesdayLunch;
+    		} else if (wednesdayType == "thanksgiving"){
+    		    create_bar("08:10", "09:30", "B Block");
+        		create_bar("09:40", "11:00", "C Block");
+        		create_bar("11:00", "11:40", "Lunch For 11th And 12th");
+        		create_bar("11:40", "12:20", "Lunch For 9th and 10th");
+        		create_bar("12:20", "13:40", "D Block");
+        		create_bar("13:45", "15:05", "E Block");
+        		create_bar("15:05", "15:30", "Tutorial");
+        		blockCount = 7
+        		document.getElementById("lunchMenu").innerHTML = wednesdayLunch;
+    		}
+	    }
+	}
+	function thursday(){
+		if (immersives == true){
+	        create_bar("09:00", "15:00", "Immersives");
+	        blockCount = 1
+	        document.getElementById("lunchMenu").innerHTML = thursdayLunch;
+	    } else if (projectWeek == true){
+	        	create_bar("08:35", "11:05", cBlock);
+        		create_bar("11:05", "12:00", "Lunch");
+        		create_bar("12:00", "14:30", dBlock);
+        		blockCount = 3
+    		document.getElementById("lunchMenu").innerHTML = thursdayLunch;
+	    } else {
+    		if (thursdayType == "normal"){
+    		    create_bar("08:10", "08:30", "Morning Meeting");
+        		create_bar("08:35", "09:55", fBlock);
+        		create_bar("09:55", "10:35", "Clubs");
+        		create_bar("10:40", "12:00", aBlock);
+        		create_bar("12:00", "12:55", "Lunch");
+        		create_bar("12:55", "14:15", bBlock);
+        		create_bar("14:15", "14:45", "Tutorial");
+        		blockCount = 7
+        		document.getElementById("lunchMenu").innerHTML = thursdayLunch;
+    		} else if (thursdayType == "reportCards"){
+    		    create_bar("08:10", "08:30", "Morning Meeting");
+        		create_bar("08:35", "09:50", fBlock);
+        		create_bar("09:55", "11:10", aBlock);
+        		create_bar("11:10", "12:05", "Lunch");
+        		create_bar("12:05", "13:20", bBlock);
+        		create_bar("13:25", "14:45", "Advisory to Review Report Cards")
+        		blockCount = 6
+        		document.getElementById("lunchMenu").innerHTML = thursdayLunch;
+    		} else if (thursdayType == "gathering"){
+    		    create_bar("08:10", "08:30", "Advisory");
+        		create_bar("08:35", "09:50", fBlock);
+        		create_bar("09:55", "11:10", aBlock);
+        		create_bar("11:10", "12:05", "Lunch");
+        		create_bar("12:05", "13:20", bBlock);
+        		create_bar("13:25", "14:45", "Gathering")
+        		blockCount = 6
+        		document.getElementById("lunchMenu").innerHTML = thursdayLunch;
+    		}
+	    }
+	}
+	function friday(){
+	    if (immersives == true){
+	        create_bar("09:00", "15:00", "Immersives");
+	        blockCount = 1
+	        document.getElementById("lunchMenu").innerHTML = fridayLunch;
+	    } else if (projectWeek == true){
+	        	create_bar("08:35", "11:05", eBlock);
+        		create_bar("11:05", "12:00", "Lunch");
+        		create_bar("12:00", "14:30", fBlock);
+        		blockCount = 3
+    		document.getElementById("lunchMenu").innerHTML = fridayLunch;
+	    } else {
+    		if (fridayType == "normal"){
+    		    create_bar("08:10", "08:30", "Morning Meeting");
+        	    create_bar("08:35", "09:55", cBlock);
+        		create_bar("10:05", "11:25", dBlock);
+        		create_bar("11:25", "12:20", "Lunch");
+        		create_bar("12:20", "13:40", eBlock);
+        		create_bar("13:45", "15:05", fBlock);
+        		blockCount = 6
+        		document.getElementById("lunchMenu").innerHTML = fridayLunch;
+    		} else if (fridayType == "lateStart"){
+    		    create_bar("08:50", "09:10", "Morning Meeting");
+        	    create_bar("09:15", "10:20", cBlock);
+        		create_bar("10:30", "11:35", dBlock);
+        		create_bar("11:35", "12:45", "Lunch");
+        		create_bar("12:50", "13:55", eBlock);
+        		create_bar("14:00", "15:05", fBlock);
+        		blockCount = 6
+        		document.getElementById("lunchMenu").innerHTML = fridayLunch;
+    		} else if (fridayType == "grandfriends"){
+    		    create_bar("08:30", "09:00", "Morning Meeting");
+        	    create_bar("09:10", "10:00", cBlock);
+        	    create_bar("10:10", "11:00", dBlock);
+        	    create_bar("11:10", "12:00", eBlock);
+        	    create_bar("12:00", "13:10", "Lunch");
+        	    create_bar("13:10", "14:00", fBlock); 
+        	    blockCount = 6
+        		document.getElementById("lunchMenu").innerHTML = fridayLunch;
+    		}
+	    }
+	}
+	function saturday(namaste){
+		create_bar("00:00", "24:00", "Saturday");
+	}
+	function sunday(namaste){
+	    create_bar("00:00", "24:00", "Sunday");
+	}
+	function summer(namaste){
+	    create_bar("00:00", "24:00", "Summer!");
+	}
+	
+	
+	function start() {
+		var d = new Date();
+		d = d.getDay();
+		console.log(d);
+		document.getElementById("aBlock").value = localStorage.getItem("a");
+		document.getElementById("bBlock").value = localStorage.getItem("b");
+		document.getElementById("cBlock").value = localStorage.getItem("c");
+		document.getElementById("dBlock").value = localStorage.getItem("d");
+		document.getElementById("eBlock").value = localStorage.getItem("e");
+		document.getElementById("fBlock").value = localStorage.getItem("f");
+		aBlock = document.getElementById("aBlock").value;
+		bBlock = document.getElementById("bBlock").value;
+		cBlock = document.getElementById("cBlock").value;
+		dBlock = document.getElementById("dBlock").value;
+		eBlock = document.getElementById("eBlock").value;
+		fBlock = document.getElementById("fBlock").value;
+		if (aBlock.length==0){
+		    aBlock = "A Block";
+		}
+		if (bBlock.length==0){
+		    bBlock = "B Block";
+		}
+		if (cBlock.length==0){
+		    cBlock = "C Block";
+		}
+		if (dBlock.length==0){
+		    dBlock = "D Block";
+		}
+		if (eBlock.length==0){
+		    eBlock = "E Block";
+		}
+		if (fBlock.length==0){
+		    fBlock = "F Block";
+		}
+		if (d == 0) {
+    		sunday();
+		} else if (d == 1) {
+			monday();
+		} else if (d == 2) {
+			tuesday();
+		} else if (d == 3) {
+			wednesday();
+		} else if (d == 4) {
+			thursday();
+		} else if (d == 5) {
+			friday();
+		} else if (d == 6) {
+		    saturday();
+		}
+		setInterval("setup_time()", 1);
+		console.log(blockCount)
+	}
+	
+	function restart() {
+		var d = new Date();
+		d = d.getDay();
+		console.log(d);
+		clearClasses();
+		aBlock = document.getElementById("aBlock").value;
+		bBlock = document.getElementById("bBlock").value;
+		cBlock = document.getElementById("cBlock").value;
+		dBlock = document.getElementById("dBlock").value;
+		eBlock = document.getElementById("eBlock").value;
+		fBlock = document.getElementById("fBlock").value;
+		localStorage.setItem("a", aBlock);
+		localStorage.setItem("b", bBlock);
+		localStorage.setItem("c", cBlock);
+		localStorage.setItem("d", dBlock);
+		localStorage.setItem("e", eBlock);
+		localStorage.setItem("f", fBlock);
+		if (d == 0) {
+			sunday();
+		} else if (d == 1) {
+			monday();
+		} else if (d == 2) {
+		    tuesday();
+		} else if (d == 3) {
+			wednesday();
+		} else if (d == 4) {
+			thursday();
+		} else if (d == 5) {
+			friday();
+		} else if (d == 6) {
+		    saturday();
+		}
+
+		setInterval("setup_time()", 1);
+	}
+	
+	function aaron(event){
+	    console.log("checking...");
+	    if (document.getElementById("dBlock").value == "aaron"){
+	        document.body.style.background = "url('aaron.jpg')";
+	        document.body.style.backgroundSize = "no-repeat";
+	    } else if (document.getElementById("dBlock").value == "harringson"){
+	        document.body.style.background = "url('hacheharrison.JPG')";
+	        document.body.style.backgroundSize = "no-repeat";
+	    } else {
+	        document.body.style.background = "url('white.jpg')";
+	        document.body.style.backgroundSize = "no-repeat";
+	    }
+	    
+	}
+	
+	function show() {
+	    console.log("working")
+	    if (document.getElementById("aBlockTitle").style.display == "initial"){
+	        document.getElementById("aBlockTitle").style.display = "none";
+		    document.getElementById("bBlockTitle").style.display = "none";
+		    document.getElementById("cBlockTitle").style.display = "none";
+		    document.getElementById("dBlockTitle").style.display = "none";
+	    	document.getElementById("eBlockTitle").style.display = "none";
+	    	document.getElementById("fBlockTitle").style.display = "none";
+	    	document.getElementById("aBlock").style.display = "none";
+	    	document.getElementById("bBlock").style.display = "none";
+	    	document.getElementById("cBlock").style.display = "none";
+	    	document.getElementById("dBlock").style.display = "none";
+	    	document.getElementById("eBlock").style.display = "none";
+	    	document.getElementById("fBlock").style.display = "none";
+	    	document.getElementById("toggleButton").value = "Show";
+	    } else if (document.getElementById("aBlockTitle").style.display == "none") {
+	        document.getElementById("aBlockTitle").style.display = "initial";
+	        document.getElementById("bBlockTitle").style.display = "initial";
+		    document.getElementById("cBlockTitle").style.display = "initial";
+		    document.getElementById("dBlockTitle").style.display = "initial";
+		    document.getElementById("eBlockTitle").style.display = "initial";
+		    document.getElementById("fBlockTitle").style.display = "initial";
+		    document.getElementById("aBlock").style.display = "initial";
+		    document.getElementById("bBlock").style.display = "initial";
+	    	document.getElementById("cBlock").style.display = "initial";
+	    	document.getElementById("dBlock").style.display = "initial";
+		    document.getElementById("eBlock").style.display = "initial";
+	    	document.getElementById("fBlock").style.display = "initial";
+	    	/*document.getElementById("toggleButton").value = "Hide";*/
+	    }
+	    modal.style.display = "block";
+	}
+	
+
+</script>
+
+<br>
+<hr>
+<br>
+<input id="toggleButton" style="float:right" type="button" onclick="show()" value="Show">
+<span style="float:right"><big>Customize your schedule! &nbsp;</big></span> 
+<span style="float:left" value="Lunch Menu" id="menuTitle"><big><u>Lunch Menu</u></big></span>
+<br>
+<br>
+<span type="text" value ="No School" id="lunchMenu" style="float:left;">No School</span>
+<br>
+<br>
+<br>
+<span style="color:red;float:left;">Want to stay up to date on morning meeting announcements? Check out the <a href="https://docs.google.com/document/d/1-oEtiQVcyADsh-71Neilmi2U-HHu3GPoipTOuCt5NyA/edit?usp=sharing">Morning Meeting Announcement Digest</a>!</span>
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span id="aBlockTitle" style="color:white;display:none;">A Block:&nbsp;</span> 
+    <input type="text" id="aBlock" style="display:none;" value="A Block">
+    <br>
+    <br>
+    <span id="bBlockTitle" style="color:white;position:static;display:none">B Block:&nbsp;</span>
+    <input type="text" id="bBlock" style="position:static;display:none;;" value="B Block">
+    <br>
+    <br>
+    <span id="cBlockTitle" style="color:white;position:static;display:none">C Block:&nbsp;</span>
+    <input type="text" id="cBlock" style="position:static;display:none;" value="C Block">
+    <br>
+    <br>
+    <span id="dBlockTitle" style="color:white;position:static;display:none">D Block:&nbsp;</span>
+    <input onkeyup="aaron(event)" type="text" id="dBlock" style="position:static;display:none;" value="D Block">
+    <br>
+    <br>
+    <span id="eBlockTitle" style="color:white;display:none">E Block:&nbsp;</span>
+    <input type="text" id="eBlock" style="display:none;" value="E Block">
+    <br>
+    <br>
+    <span id="fBlockTitle" style="color:white;display:none">F Block:&nbsp;</span>
+    <input type="text" id="fBlock" style="display:none;" value="F Block">
+    <br>
+    <br>
+    <br>
+    <span class="close">Save and Close</span>
+  </div>
+
+</div>
+
+<style>
+    /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 5; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #5C77FF;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 30px;
+  border: 2px solid #888;
+  width: 15%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #FFF;
+  font-size: 14px;
+  font-weight: bold;
+  display:table;
+  margin:0 auto;
+}
+
+.close:hover,
+.close:focus {
+  color: grey;
+  text-decoration: none;
+  cursor: pointer;
+} 
+/* Modal Content */
+.modal-content {
+  position: relative;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  animation-name: animatetop;
+  animation-duration: 0.5s
+}
+
+/* Add Animation */
+@keyframes animatetop {
+  from {top: -500px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+</style>
+<script>
+    // Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("toggleButton");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on the button, open the modal
+
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  show();
+  restart();
+  modal.style.display = "none";
+  
+} 
+
+// When the user clicks anywhere outside of the modal, close it
+/*window.onclick = function(event) {
+  if (event.target == modal) {
+    show();
+    restart();
+    modal.style.display = "none";
+  }
+} */
+</script>
+
+
+</body>
+
+</html>
+
+
+
