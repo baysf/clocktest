@@ -633,6 +633,11 @@ background-size: 100% 100%;
 		} else if (d == 6) {
 		    saturday();
 		}
+		document.getElementById("mondayLunch").innerHTML = "Monday:" + mondayLunch;
+		document.getElementById("tuesdayLunch").innerHTML = "Tuesday:" + mondayLunch;
+		document.getElementById("wednesdayLunch").innerHTML = "Wednesday:" + mondayLunch;
+		document.getElementById("thursdayLunch").innerHTML = "Thursday:" + mondayLunch;
+		document.getElementById("fridayLunch").innerHTML = "Friday:" + mondayLunch;
 		setInterval("setup_time()", 1);
 		console.log(blockCount)
 	}
@@ -780,7 +785,11 @@ background-size: 100% 100%;
 
   <!-- Modal content -->
   <div class="modal-content2">
-    test
+    <span type="text" value ="No Data" id="mondayLunch" style="float:left;"></span>
+    <span type="text" value ="No Data" id="tuesdayLunch" style="float:left;"></span>
+    <span type="text" value ="No Data" id="wednesdayLunch" style="float:left;"></span>
+    <span type="text" value ="No Data" id="thursdayLunch" style="float:left;"></span>
+    <span type="text" value ="No Data" id="fridayLunch" style="float:left;"></span>
     <span class="close2">Close</span>
   </div>
 
@@ -861,7 +870,7 @@ btn2.onclick = function() {
   }
 } */
 </script>
-/* second modal */
+
 <style>
     /* The Modal (background) */
 .modal {
