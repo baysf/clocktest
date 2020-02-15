@@ -736,6 +736,7 @@ background-size: 100% 100%;
 <span type="text" value ="No School" id="lunchMenu" style="float:left;">No School</span>
 <br>
 <br>
+<input id="toggleButton2" style="float:left" type="button" value="Week Lunch Schedule">
 <br>
 <span style="color:red;float:left;">Want to stay up to date on morning meeting announcements? Check out the <a href="https://docs.google.com/document/d/1-oEtiQVcyADsh-71Neilmi2U-HHu3GPoipTOuCt5NyA/edit?usp=sharing">Morning Meeting Announcement Digest</a>!</span>
 
@@ -774,7 +775,91 @@ background-size: 100% 100%;
   </div>
 
 </div>
+<!-- The Modal -->
+<div id="myModal2" class="modal2">
 
+  <!-- Modal content -->
+  <div class="modal-content2">
+    test
+    <span class="close2">Close</span>
+  </div>
+
+</div>
+<style>
+    /* The Modal (background) */
+.modal2 {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 5; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content2 {
+  background-color: #5C77FF;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 30px;
+  border: 2px solid #888;
+  width: 15%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close2 {
+  color: #FFF;
+  font-size: 14px;
+  font-weight: bold;
+  display:table;
+  margin:0 auto;
+}
+
+.close2:hover,
+.close2:focus {
+  color: grey;
+  text-decoration: none;
+  cursor: pointer;
+} 
+/* Modal Content */
+.modal-content2 {
+  position: relative;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  animation-name: animatetop;
+  animation-duration: 0.5s
+}
+</style>
+<script>
+    // Get the modal
+var modal2 = document.getElementById("myModal2");
+
+// Get the button that opens the modal
+var btn2 = document.getElementById("toggleButton2");
+
+// Get the <span> element that closes the modal
+var span2 = document.getElementsByClassName("close2")[0];
+// When the user clicks on the button, open the modal
+
+
+// When the user clicks on <span> (x), close the modal
+span2.onclick = function() {
+  modal2.style.display = "none";
+  
+} 
+
+// When the user clicks anywhere outside of the modal, close it
+/*window.onclick = function(event) {
+  if (event.target == modal) {
+    show();
+    restart();
+    modal.style.display = "none";
+  }
+} */
+</script>
+/* second modal */
 <style>
     /* The Modal (background) */
 .modal {
