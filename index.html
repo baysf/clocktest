@@ -127,7 +127,7 @@ background-size: 100% 100%;
                 dC = dC.getDay();
                 console.log(dC)
                 dC+=1;
-    		    document.getElementById("menuTitle").innerHTML = "Tomorrow's Lunch"
+    		    document.getElementById("menuTitle").innerHTML = "Tomorrow's Lunch&nbsp;&nbsp;"
     		    document.getElementById("menuTitle").style.textDecoration = "underline";
     		    document.getElementById("menuTitle").style.fontSize = "large";
     		    if (dC==1) {
@@ -738,8 +738,7 @@ background-size: 100% 100%;
 <br>
 <input id="toggleButton" style="float:right" type="button" onclick="show()" value="Show">
 <span style="float:right"><big>Customize your schedule! &nbsp;</big></span> 
-<span style="float:left" value="Lunch Menu" id="menuTitle"><big><u>Lunch Menu</u></big></span>
-<p>&nbsp;&nbsp;</p>
+<span style="float:left" value="Lunch Menu&nbsp;&nbsp;" id="menuTitle"><big><u>Lunch Menu&nbsp;&nbsp;</u></big></span>
 <input id="toggleButton2" style="float:left" type="button" value="Week Lunch Schedule">
 <br>
 <br>
