@@ -739,7 +739,7 @@ background-size: 100% 100%;
 <input id="toggleButton" style="float:right" type="button" onclick="show()" value="Show">
 <span style="float:right"><big>Customize your schedule! &nbsp;</big></span> 
 <span style="float:left" value="Lunch Menu&nbsp;&nbsp;" id="menuTitle"><big><u>Lunch Menu&nbsp;&nbsp;</u></big></span>
-<input id="toggleButton2" style="float:left" type="button" value="Week Lunch Schedule">
+<a href="#" class="button"id="toggleButton2" style="float:left">Week Lunch Schedule</a>
 <br>
 <br>
 <span type="text" value ="No School" id="lunchMenu" style="float:left;">No School</span>
@@ -824,7 +824,18 @@ background-size: 100% 100%;
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 /* Modal Content/Box */
 .modal-content2 {
   background-color: #5C77FF;
