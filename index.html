@@ -357,7 +357,12 @@ background-size: 100% 100%;
     wednesdayLunch = "Hot Dogs or Veggie Dogs on Brioche Bun with Oven Baked Fries and Broccoli";
     thursdayLunch = "Chicken or Avocado Caesar Salad w/Roasted Vegetables and Bread and Cheese";
     fridayLunch = "Bean & Cheese Burritos with Citrus Cabbage Salad and Mexican Rice";
-    
+
+    mondayLunch = "&nbsp;" + mondayLunch
+    tuesdayLunch = "&nbsp;" + tuesdayLunch
+    wednesdayLunch = "&nbsp;" + wednesdayLunch
+    thursdayLunch = "&nbsp;" + thursdayLunch
+    fridayLunch = "&nbsp;" + fridayLunch
     
     /* Options:
     Monday: "normal", "first day"
@@ -636,11 +641,11 @@ background-size: 100% 100%;
 		} else if (d == 6) {
 		    saturday();
 		}
-		document.getElementById("mondayLunch").innerHTML = "Monday: " + mondayLunch;
-		document.getElementById("tuesdayLunch").innerHTML = "Tuesday: " + tuesdayLunch;
-		document.getElementById("wednesdayLunch").innerHTML = "Wednesday: " + wednesdayLunch;
-		document.getElementById("thursdayLunch").innerHTML = "Thursday: " + thursdayLunch;
-		document.getElementById("fridayLunch").innerHTML = "Friday: " + fridayLunch;
+		document.getElementById("mondayLunch").innerHTML = "&nbsp;" + mondayLunch;
+		document.getElementById("tuesdayLunch").innerHTML = "&nbsp; " + tuesdayLunch;
+		document.getElementById("wednesdayLunch").innerHTML = "&nbsp; " + wednesdayLunch;
+		document.getElementById("thursdayLunch").innerHTML = "&nbsp; " + thursdayLunch;
+		document.getElementById("fridayLunch").innerHTML = "&nbsp; " + fridayLunch;
 		setInterval("setup_time()", 1);
 		console.log(blockCount)
 	}
@@ -735,10 +740,10 @@ background-size: 100% 100%;
 <br>
 <hr>
 <input type="button"class="button"id="toggleButton"onclick="show()"style="float:right"value="Customize Schedule"></input>
-<span style="float:left" value="Lunch Menu" id="menuTitle"><big><u>Lunch Menu</u></big></span>
+<span style="float:left" value="&nbsp;Lunch Menu" id="menuTitle"><big><u></u></big></span>
 <br>
 <br>
-<span type="text" value ="No School" id="lunchMenu" style="float:left;">No School</span>
+<span type="text" value ="&nbsp;No School" id="lunchMenu" style="float:left;">No School</span>
 <br>
 <br>
 <input type="button"class="button"id="toggleButton2" style="float:left"value="Week Lunch Menu"></input>
@@ -788,19 +793,23 @@ background-size: 100% 100%;
 
   <!-- Modal content -->
   <div class="modal-content2">
-    <span type="text" value ="No Data" style="float:left;color:"><strong>Monday:</strong></span>
+    <span type="text" value ="No Data" style="float:left;"><strong>Monday:</strong></span>
     <span type="text" value ="No Data" id="mondayLunch" style="float:left;color:white;"></span>
     <br>
     <br>
+    <span type="text" value ="No Data" style="float:left;"><strong>Tuesday:</strong></span>
     <span type="text" value ="No Data" id="tuesdayLunch" style="float:left;color:white;"></span>
     <br>
     <br>
+    <span type="text" value ="No Data" style="float:left;"><strong>Wednesday:</strong></span>
     <span type="text" value ="No Data" id="wednesdayLunch" style="float:left;color:white;"></span> 
     <br>
     <br>
+    <span type="text" value ="No Data" style="float:left;"><strong>Thursday:</strong></span>
     <span type="text" value ="No Data" id="thursdayLunch" style="float:left;color:white;"></span>
     <br>
     <br>
+    <span type="text" value ="No Data" style="float:left;"><strong>Friday:</strong></span>
     <span type="text" value ="No Data" id="fridayLunch" style="float:left;color:white;"></span>
     <br>
     <br>
