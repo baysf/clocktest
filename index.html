@@ -126,6 +126,7 @@ background-size: 100% 100%;
     		    var dC = new Date();
                 dC = dC.getDay();
                 console.log(dC)
+		document.getElementById("time_left").innerHTML = dC;
                 dC+=1;
     		    document.getElementById("menuTitle").innerHTML = "Tomorrow's Lunch";
     		    document.getElementById("menuTitle").style.textDecoration = "underline";
@@ -144,6 +145,7 @@ background-size: 100% 100%;
     		        document.getElementById("lunchMenu").innerHTML = "No School";
     		    }
     		}
+
     		console.log(tS);
 			if (width >= 100) { //If statement, common.
 				width = 100; //If width is over 100% terminate the bar
