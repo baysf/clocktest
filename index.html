@@ -121,12 +121,12 @@ background-size: 100% 100%;
 		div.style.width = width + "%"; //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 		var id = setInterval(update, 1); //Makes the next thing run every millisecond :D fancy af
 		function update() { //Function that runs a lot
-		document.title = "hello";
     		if (tS == true){
     		    var dC = new Date();
                 dC = dC.getDay();
                 console.log(dC)
                 dC+=1;
+		document.title = "test";
 		
     		    document.getElementById("menuTitle").innerHTML = "Tomorrow's Lunch";
     		    document.getElementById("menuTitle").style.textDecoration = "underline";
