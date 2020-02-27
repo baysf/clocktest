@@ -126,7 +126,6 @@ background-size: 100% 100%;
                 dC = dC.getDay();
                 console.log(dC)
                 dC+=1;
-		document.title = "test";
 		
     		    document.getElementById("menuTitle").innerHTML = "Tomorrow's Lunch";
     		    document.getElementById("menuTitle").style.textDecoration = "underline";
@@ -146,7 +145,7 @@ background-size: 100% 100%;
     		    }
     		}
 
-    		console.log(tS);
+    		console.log(t);
 			if (width >= 100) { //If statement, common.
 				width = 100; //If width is over 100% terminate the bar
 				div.style.width = width + "%"; //Set bar fullness to 100%
@@ -178,6 +177,7 @@ background-size: 100% 100%;
 			
 			}
 		}
+		document.title = t;
 		//document.getElementById(till_id).innerHTML = s_to_hms(start)
 	}
 
